@@ -21,12 +21,16 @@ When the file length more then 50000 characters, the file contents will be clear
 当restore.sql内容超过50000个字符时，为了性能考虑，程序会自动清空文件内容。    
 
 ===============  
-支持ibatis/mybatis的输出格式如下：  
+所支持ibatis/mybatis的输出格式如下：  
 
 `2016-10-21 16:46:29.316 DEBUG c.o.f.b.s.B.testMethod -  -  - ==>  Preparing: SELECT * FROM tablename where id = ?  `
 `2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.testMethod -  -  - ==> Parameters: 123(Integer)`
 
 ===============  
+[插件下载](https://github.com/kookob/RestoreSql/blob/master/RestoreSql.jar?raw=true "Download Plugin")  
+
+===============  
+
 **(This plugin requires your IDE to run on Java 7 or higher.)**  
 
 Reference list:  
