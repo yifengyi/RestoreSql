@@ -1,0 +1,43 @@
+<idea-plugin version="2">
+  <id>restore.sql</id>
+  <name>Restore Sql</name>
+  <version>1.0</version>
+  <vendor email="kookob@gmail.com" url="http://www.obroom.com">kookob</vendor>
+
+  <description><![CDATA[
+      restore the ibatis/mybatis generate sql to orignal whole sql.<br>
+      It will generate restore.sql file on the project base path. and replace ? to the really param value.<br>
+      Through the "Tools -> Tail restore.sql In Console" menu you can tail the sql file.<br>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      <ul>
+          <li>Initial release.</li>
+      </ul>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="141.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+    <consoleFilterProvider implementation="restore.sql.RestoreSqlProvider"/>
+    <executor implementation="restore.sql.tail.TailRunExecutor" id="RestoreSqlTail"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="TailRestoreSqlLog" class="restore.sql.action.TailRestoreSqlLog" text="Tail restore.sql in Console"
+            description="Tail restore.sql in Console">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </action>
+  </actions>
+
+</idea-plugin>

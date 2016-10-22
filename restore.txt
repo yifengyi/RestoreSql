@@ -1,0 +1,206 @@
+2016-10-08 12:00:01.937 DEBUG c.o.m.v.b.e.BillEntityMapper.selectByCondition -  -  - ==>
+select id, partner_id, corp_id, voucher_id, year, month, cust_code, barcode, branch_code, img_url, thum_url, bill_batch, bill_num, sheet, issue_date, flag, accounting_bill_id, is_relation, sequence_no, bill_error, error_reason, category, category_code, image_type, type_description, customer, customer_ssm_no, customer_gst_regno, supplier, supplier_ssm_no, supplier_gst_regno, invoice_date, cheque_no, rounding_adjustment, net_amount, total_amount, total_tax, exchange_rate, currency, freight, freight_gst, car_registration_number, description, bank_name, account_number, pay_day, customs_doc_no, icno, employee_name, corp_amount, staff_amount, socso_employee, epf_employer, socso_employer, epf_employee, local_currency_amount, foreign_currency_amount, invoice_no, refno, create_ts, create_user_id, update_ts, update_user_id, expense_code, account_period, barcodes 
+FROM t_ml_vop_bil_bill 
+WHERE ( corp_id = 'f6977140a2534330aa7d1d1fa62bbdbc' and year = 2016 and month = 3 and flag = 3 )
+--------------------------------------------------------------------------------
+-- 2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+SELECT * 
+FROM BATCH_SCHEDULER
+--------------------------------------------------------------------------------
+-- 2016-10-08 12:00:01.937 DEBUG c.o.m.v.b.e.BillEntityMapper.selectByCondition -  -  - ==>
+
+    select
+        id,
+        partner_id,
+        corp_id,
+        voucher_id,
+        year,
+        month,
+        cust_code,
+        barcode,
+        branch_code,
+        img_url,
+        thum_url,
+        bill_batch,
+        bill_num,
+        sheet,
+        issue_date,
+        flag,
+        accounting_bill_id,
+        is_relation,
+        sequence_no,
+        bill_error,
+        error_reason,
+        category,
+        category_code,
+        image_type,
+        type_description,
+        customer,
+        customer_ssm_no,
+        customer_gst_regno,
+        supplier,
+        supplier_ssm_no,
+        supplier_gst_regno,
+        invoice_date,
+        cheque_no,
+        rounding_adjustment,
+        net_amount,
+        total_amount,
+        total_tax,
+        exchange_rate,
+        currency,
+        freight,
+        freight_gst,
+        car_registration_number,
+        description,
+        bank_name,
+        account_number,
+        pay_day,
+        customs_doc_no,
+        icno,
+        employee_name,
+        corp_amount,
+        staff_amount,
+        socso_employee,
+        epf_employer,
+        socso_employer,
+        epf_employee,
+        local_currency_amount,
+        foreign_currency_amount,
+        invoice_no,
+        refno,
+        create_ts,
+        create_user_id,
+        update_ts,
+        update_user_id,
+        expense_code,
+        account_period,
+        barcodes  
+    FROM
+        t_ml_vop_bil_bill  
+    WHERE
+        (
+            corp_id = 'f6977140a2534330aa7d1d1fa62bbdbc' 
+            and year = 2016 
+            and month = 3 
+            and flag = 3 
+        )
+--------------------------------------------------------------------------------
+2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+
+    SELECT
+        *  
+    FROM
+        BATCH_SCHEDULER
+--------------------------------------------------------------------------------
+2016-10-08 12:00:01.937 DEBUG c.o.m.v.b.e.BillEntityMapper.selectByCondition -  -  - ==>
+select id, partner_id, corp_id, voucher_id, year, month, cust_code, barcode, branch_code, img_url, thum_url, bill_batch, bill_num, sheet, issue_date, flag, accounting_bill_id, is_relation, sequence_no, bill_error, error_reason, category, category_code, image_type, type_description, customer, customer_ssm_no, customer_gst_regno, supplier, supplier_ssm_no, supplier_gst_regno, invoice_date, cheque_no, rounding_adjustment, net_amount, total_amount, total_tax, exchange_rate, currency, freight, freight_gst, car_registration_number, description, bank_name, account_number, pay_day, customs_doc_no, icno, employee_name, corp_amount, staff_amount, socso_employee, epf_employer, socso_employer, epf_employee, local_currency_amount, foreign_currency_amount, invoice_no, refno, create_ts, create_user_id, update_ts, update_user_id, expense_code, account_period, barcodes 
+FROM t_ml_vop_bil_bill 
+WHERE ( corp_id = 'f6977140a2534330aa7d1d1fa62bbdbc' and year = 2016 and month = 3 and flag = 3 )
+--------------------------------------------------------------------------------
+2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+SELECT * 
+FROM BATCH_SCHEDULER
+--------------------------------------------------------------------------------
+2016-10-08 12:00:01.937 DEBUG c.o.m.v.b.e.BillEntityMapper.selectByCondition -  -  - ==>
+
+    select
+        id,
+        partner_id,
+        corp_id,
+        voucher_id,
+        year,
+        month,
+        cust_code,
+        barcode,
+        branch_code,
+        img_url,
+        thum_url,
+        bill_batch,
+        bill_num,
+        sheet,
+        issue_date,
+        flag,
+        accounting_bill_id,
+        is_relation,
+        sequence_no,
+        bill_error,
+        error_reason,
+        category,
+        category_code,
+        image_type,
+        type_description,
+        customer,
+        customer_ssm_no,
+        customer_gst_regno,
+        supplier,
+        supplier_ssm_no,
+        supplier_gst_regno,
+        invoice_date,
+        cheque_no,
+        rounding_adjustment,
+        net_amount,
+        total_amount,
+        total_tax,
+        exchange_rate,
+        currency,
+        freight,
+        freight_gst,
+        car_registration_number,
+        description,
+        bank_name,
+        account_number,
+        pay_day,
+        customs_doc_no,
+        icno,
+        employee_name,
+        corp_amount,
+        staff_amount,
+        socso_employee,
+        epf_employer,
+        socso_employer,
+        epf_employee,
+        local_currency_amount,
+        foreign_currency_amount,
+        invoice_no,
+        refno,
+        create_ts,
+        create_user_id,
+        update_ts,
+        update_user_id,
+        expense_code,
+        account_period,
+        barcodes  
+    FROM
+        t_ml_vop_bil_bill  
+    WHERE
+        (
+            corp_id = 'f6977140a2534330aa7d1d1fa62bbdbc' 
+            and year = 2016 
+            and month = 3 
+            and flag = 3 
+        )
+--------------------------------------------------------------------------------
+2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+
+    SELECT
+        *  
+    FROM
+        BATCH_SCHEDULER
+--------------------------------------------------------------------------------
+(char)27+"[01;31m;This text is red."+(char)27+"[00;00m"
+-- 2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+SELECT * 
+FROM BATCH_SCHEDULER
+-- ----------------------------------------------------------------------------------------------------------------------
+-- 2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+SELECT * 
+FROM BATCH_SCHEDULER
+-- ----------------------------------------------------------------------------------------------------------------------
+-- 2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.getBatchSchedulerList -  -  - ==>
+
+    SELECT
+        *  
+    FROM
+        BATCH_SCHEDULER
+-- ----------------------------------------------------------------------------------------------------------------------
