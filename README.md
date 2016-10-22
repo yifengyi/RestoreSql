@@ -33,7 +33,7 @@ When the file length more then 50000 characters, the file contents will be clear
 
 **(This plugin requires your IDE to run on Java 7 or higher.)**  
 
-Reference list:  
+Reference and copy some code from below list:  
 https://github.com/JetBrains/intellij-community  
 https://github.com/krasa/GrepConsole  
 https://github.com/hibernate/hibernate-orm  
