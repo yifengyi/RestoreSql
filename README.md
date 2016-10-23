@@ -24,7 +24,8 @@ When the file length more then 50000 characters, the file contents will be clear
 所支持ibatis/mybatis的输出格式如下：  
 
 `2016-10-21 16:46:29.316 DEBUG c.o.f.b.s.B.testMethod -  -  - ==>  Preparing: SELECT * FROM tablename where id = ?  `
-`2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.testMethod -  -  - ==> Parameters: 123(Integer)`
+`2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.testMethod -  -  - ==> Parameters: 123(Integer)`  
+以 "Preparing:" 和 "Parameters:" 作为分割符进行解析。  
 
 ===============  
 [插件下载](https://github.com/kookob/RestoreSql/blob/master/RestoreSql.jar?raw=true "Download Plugin")  
