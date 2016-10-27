@@ -29,17 +29,19 @@ public class RestoreSqlFilter implements Filter {
     @Nullable
     @Override
     public Result applyFilter(final String currentLine, int endPoint) {
-        if(currentLine.contains("Parameters:") && StringHelper.isNotEmpty(prevLine) && prevLine.contains("Preparing:")) {
-            String preStr = "-- " + currentLine.split("Parameters:")[0].trim();
-            String restoreSql = RestoreSqlUtil.restoreSql(prevLine, currentLine);
-            println(preStr);
-            if(sqlFormat) {
-                restoreSql = format(restoreSql);
+        if(RestoreSqlConfig.running) {
+            if(currentLine.contains("Parameters:") && StringHelper.isNotEmpty(prevLine) && prevLine.contains("Preparing:")) {
+                String preStr = "-- " + currentLine.split("Parameters:")[0].trim();
+                String restoreSql = RestoreSqlUtil.restoreSql(prevLine, currentLine);
+                println(preStr);
+                if(sqlFormat) {
+                    restoreSql = format(restoreSql);
+                }
+                println(restoreSql);
+                println("------------------------------------------------------------------------------------------------------------------------");
             }
-            println(restoreSql);
-            println("------------------------------------------------------------------------------------------------------------------------");
+            prevLine = currentLine;
         }
-        prevLine = currentLine;
         return null;
     }
 

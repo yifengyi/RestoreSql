@@ -48,6 +48,8 @@ public class OpenFileInConsoleAction extends DumbAwareAction {
 	}
 
 	public void openFileInConsole(final Project project, final File file) {
+		RestoreSqlConfig.running = true;
+
 		final Process process = new MyProcess(file);
 
 		final ProcessHandler osProcessHandler = new MyProcessHandler(process, file.getName(), Charset.defaultCharset()) {
@@ -76,6 +78,7 @@ public class OpenFileInConsoleAction extends DumbAwareAction {
 			@Override
 			public void run() {
 				osProcessHandler.destroyProcess();
+				RestoreSqlConfig.running = false;
 			}
 		}, new Computable<Boolean>() {
 			@Override
