@@ -48,7 +48,7 @@ import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 
-import restore.sql.RestoreSqlFilter;
+import restore.sql.RestoreSqlConfig;
 
 /**
  * Copy of com.intellij.execution.RunContentExecutor Runs a process and prints the output in a content tab within the
@@ -294,7 +294,7 @@ public class TailContentExecutor implements Disposable {
 
 		@Override
 		public boolean isSelected(AnActionEvent anActionEvent) {
-			return RestoreSqlFilter.sqlFormat;
+			return RestoreSqlConfig.sqlFormat;
 		}
 
 		@Override

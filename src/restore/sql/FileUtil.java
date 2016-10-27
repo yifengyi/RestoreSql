@@ -12,29 +12,40 @@ import java.io.RandomAccessFile;
 public class FileUtil {
 
     public static void appendTo(String filePath, String content) {
+        RandomAccessFile randomFile = null;
         try {
-            RandomAccessFile randomFile = new RandomAccessFile(filePath, "rw");
+            randomFile = new RandomAccessFile(filePath, "rw");
             long fileLength = randomFile.length();
-            if(fileLength > 50000) {
-                clear(filePath);
-                fileLength = 0;
-            }
+            //如果直接清除，指针位置需要往前移动
+//            if(fileLength > 50000) {
+//                clear(filePath);
+//                fileLength = 0;
+//            }
             randomFile.seek(fileLength);
             randomFile.writeBytes(content);
             randomFile.writeBytes("\n");
-            randomFile.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if(randomFile != null) {
+                try {
+                    randomFile.close();
+                } catch (IOException e) {}
+            }
         }
     }
 
     public static void clear(String filePath) {
+        PrintWriter writer = null;
         try {
-            PrintWriter writer = new PrintWriter(new File(filePath));
+            writer = new PrintWriter(new File(filePath));
             writer.print("");
-            writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            if(writer != null) {
+                writer.close();
+            }
         }
     }
 

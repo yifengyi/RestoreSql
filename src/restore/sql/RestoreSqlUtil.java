@@ -49,6 +49,9 @@ public class RestoreSqlUtil {
                 restoreSql =  preparingSql;
             }
             restoreSql = simpleFormat(restoreSql);
+            if(!restoreSql.endsWith(";")) {
+                restoreSql += ";";
+            }
         } catch (Exception e) {
             return "";
         }

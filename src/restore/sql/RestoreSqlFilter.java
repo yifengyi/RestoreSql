@@ -9,15 +9,17 @@ import restore.sql.hibernate.BasicFormatterImpl;
 import restore.sql.hibernate.Formatter;
 import restore.sql.hibernate.StringHelper;
 
+import static restore.sql.RestoreSqlConfig.sqlFormat;
+
 /**
  * @author ob
  */
 public class RestoreSqlFilter implements Filter {
     private final Project project;
-    private final String defaultFileName = "restore.sql";
-    public static String filePath;
     private static String prevLine = "";
-    public static boolean sqlFormat = false;
+    public static String filePath;
+    private final String defaultFileName = "restore.sql";
+
 
     public RestoreSqlFilter(Project project) {
         this.project = project;
@@ -35,7 +37,7 @@ public class RestoreSqlFilter implements Filter {
                 restoreSql = format(restoreSql);
             }
             println(restoreSql);
-            println("-- ----------------------------------------------------------------------------------------------------------------------");
+            println("------------------------------------------------------------------------------------------------------------------------");
         }
         prevLine = currentLine;
         return null;

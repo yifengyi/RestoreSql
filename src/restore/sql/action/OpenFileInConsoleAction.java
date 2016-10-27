@@ -21,6 +21,7 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import restore.sql.FileUtil;
+import restore.sql.RestoreSqlConfig;
 import restore.sql.RestoreSqlFilter;
 import restore.sql.tail.MyProcessHandler;
 import restore.sql.tail.TailContentExecutor;
@@ -85,13 +86,16 @@ public class OpenFileInConsoleAction extends DumbAwareAction {
 		executor.withFormat(new Runnable() {
 			@Override
 			public void run() {
-				RestoreSqlFilter.sqlFormat = !RestoreSqlFilter.sqlFormat;
+				RestoreSqlConfig.sqlFormat = !RestoreSqlConfig.sqlFormat;
 			}
 		});
 		executor.withClear(new Runnable() {
 			@Override
 			public void run() {
 				FileUtil.clear(RestoreSqlFilter.filePath);
+				osProcessHandler.destroyProcess();
+				osProcessHandler.waitFor(2000L);
+				openFileInConsole(project, file);
 			}
 		});
 		executor.run();
