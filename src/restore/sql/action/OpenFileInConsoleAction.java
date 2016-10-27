@@ -96,9 +96,11 @@ public class OpenFileInConsoleAction extends DumbAwareAction {
 			@Override
 			public void run() {
 				FileUtil.clear(RestoreSqlFilter.filePath);
-				osProcessHandler.destroyProcess();
-				osProcessHandler.waitFor(2000L);
-				openFileInConsole(project, file);
+				if(RestoreSqlConfig.running) {
+					osProcessHandler.destroyProcess();
+					osProcessHandler.waitFor(2000L);
+					openFileInConsole(project, file);
+				}
 			}
 		});
 		executor.run();

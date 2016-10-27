@@ -46,7 +46,7 @@ public class RestoreSqlFilter implements Filter {
     }
 
     public void println(String line) {
-        FileUtil.appendTo(filePath, line);
+        FileUtil.appendTo2(filePath, line);
     }
 
     public static String format(String sql) {

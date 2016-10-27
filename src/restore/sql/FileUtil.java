@@ -1,8 +1,11 @@
 package restore.sql;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 
@@ -22,14 +25,34 @@ public class FileUtil {
 //                fileLength = 0;
 //            }
             randomFile.seek(fileLength);
-            randomFile.writeBytes(content);
-            randomFile.writeBytes("\n");
+            randomFile.writeUTF(content);
+            randomFile.writeUTF("\n");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             if(randomFile != null) {
                 try {
                     randomFile.close();
+                    randomFile = null;
+                } catch (IOException e) {}
+            }
+        }
+    }
+
+    public static void appendTo2(String filePath, String content) {
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8"));
+            writer.append(content);
+            writer.append("\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(writer != null) {
+                try {
+                    writer.close();
+                    writer = null;
                 } catch (IOException e) {}
             }
         }
@@ -45,6 +68,7 @@ public class FileUtil {
         } finally {
             if(writer != null) {
                 writer.close();
+                writer = null;
             }
         }
     }

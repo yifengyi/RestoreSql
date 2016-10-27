@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>restore.sql</id>
   <name>Restore Sql</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <vendor email="kookob@gmail.com" url="http://www.obroom.com">kookob</vendor>
 
   <description><![CDATA[
