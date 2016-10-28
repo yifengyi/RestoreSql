@@ -2,7 +2,7 @@
   <id>restore.sql</id>
   <name>Restore Sql</name>
   <version>1.0.1</version>
-  <vendor email="kookob@gmail.com" url="http://www.obroom.com">kookob</vendor>
+  <vendor email="kookob@gmail.com" url="https://github.com/kookob/RestoreSql">ob</vendor>
 
   <description><![CDATA[
       restore the ibatis/mybatis generate sql to orignal whole sql.<br>
