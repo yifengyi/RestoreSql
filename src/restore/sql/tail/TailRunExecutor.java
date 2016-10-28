@@ -11,7 +11,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
 
 /**
- * @author Vojtech Krasa
+ * @author ob
  */
 public class TailRunExecutor extends Executor {
 	public static final Icon ToolWindowRun = IconLoader.getIcon("/restore/sql/data/sql.png");
@@ -66,7 +66,7 @@ public class TailRunExecutor extends Executor {
 
 	@Override
 	public String getContextActionId() {
-		return "RestoreSqlTailFile";
+		return "RestoreSqlLog";
 	}
 
 	@Override

@@ -34,8 +34,8 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="TailRestoreSqlLog" class="restore.sql.action.TailRestoreSqlLog" text="Tail restore.sql in Console"
-            description="Tail restore.sql in Console">
+    <action id="TailRestoreSqlLog" class="restore.sql.action.TailRestoreSqlLog" text="Tail restore sql log in Console"
+            description="Tail restore sql log in Console">
       <add-to-group group-id="ToolsMenu" anchor="last"/>
     </action>
   </actions>

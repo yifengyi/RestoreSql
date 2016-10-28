@@ -18,9 +18,6 @@ import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.filters.Filter;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.RunContentDescriptor;
@@ -58,264 +55,200 @@ import restore.sql.RestoreSqlConfig;
  * @author ob
  */
 public class TailContentExecutor implements Disposable {
-	private final Project myProject;
-	private final ProcessHandler myProcess;
-	private final List<Filter> myFilterList = new ArrayList<Filter>();
-	private Runnable myRerunAction;
-	private Runnable myStopAction;
-	private Runnable myFormatAction;
-	private Runnable myClearAction;
-	private Runnable myAfterCompletion;
-	private Computable<Boolean> myStopEnabled;
-	private String myTitle = "Output";
-	private String myHelpId = null;
-	private boolean myActivateToolWindow = true;
+    private final Project myProject;
+    private final List<Filter> myFilterList = new ArrayList<>();
+    private Runnable myRerunAction;
+    private Runnable myStopAction;
+    private Runnable myFormatAction;
+    private Computable<Boolean> myStopEnabled;
+    private String myTitle = "Output";
+    private String myHelpId = null;
+    private boolean myActivateToolWindow = true;
+    public static ConsoleView consoleView = null;
+    public static final Icon FormatIcon = IconLoader.getIcon("/restore/sql/data/format.png");
 
-	public static final Icon FormatIcon = IconLoader.getIcon("/restore/sql/data/format.png");
+    public TailContentExecutor(@NotNull Project project) {
+        myProject = project;
+    }
 
-	public TailContentExecutor(@NotNull Project project, @NotNull ProcessHandler process) {
-		myProject = project;
-		myProcess = process;
-	}
+    public TailContentExecutor withTitle(String title) {
+        myTitle = title;
+        return this;
+    }
 
-	public TailContentExecutor withFilter(Filter filter) {
-		myFilterList.add(filter);
-		return this;
-	}
+    public TailContentExecutor withRerun(Runnable rerun) {
+        myRerunAction = rerun;
+        return this;
+    }
 
-	public TailContentExecutor withTitle(String title) {
-		myTitle = title;
-		return this;
-	}
+    public TailContentExecutor withStop(@NotNull Runnable stop, @NotNull Computable<Boolean> stopEnabled) {
+        myStopAction = stop;
+        myStopEnabled = stopEnabled;
+        return this;
+    }
 
-	public TailContentExecutor withRerun(Runnable rerun) {
-		myRerunAction = rerun;
-		return this;
-	}
+    public TailContentExecutor withFormat(Runnable format) {
+        myFormatAction = format;
+        return this;
+    }
 
-	public TailContentExecutor withStop(@NotNull Runnable stop, @NotNull Computable<Boolean> stopEnabled) {
-		myStopAction = stop;
-		myStopEnabled = stopEnabled;
-		return this;
-	}
+    private ConsoleView createConsole(@NotNull Project project) {
+        TextConsoleBuilder consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project);
+        consoleBuilder.filters(myFilterList);
+        ConsoleView console = consoleBuilder.getConsole();
+        return console;
+    }
 
-	public TailContentExecutor withFormat(Runnable format) {
-		myFormatAction = format;
-		return this;
-	}
+    public void run() {
+        FileDocumentManager.getInstance().saveAllDocuments();
 
-	public TailContentExecutor withClear(Runnable clear) {
-		myClearAction = clear;
-		return this;
-	}
+        consoleView = createConsole(myProject);
 
-	public TailContentExecutor withAfterCompletion(Runnable afterCompletion) {
-		myAfterCompletion = afterCompletion;
-		return this;
-	}
+        if (myHelpId != null) {
+            consoleView.setHelpId(myHelpId);
+        }
+        Executor executor = TailRunExecutor.getRunExecutorInstance();
+        DefaultActionGroup actions = new DefaultActionGroup();
 
-	public TailContentExecutor withHelpId(String helpId) {
-		myHelpId = helpId;
-		return this;
-	}
+        // Create runner UI layout
+        final RunnerLayoutUi.Factory factory = RunnerLayoutUi.Factory.getInstance(myProject);
+        final RunnerLayoutUi layoutUi = factory.create("Tail", "Tail", "Tail", myProject);
 
-	public TailContentExecutor withActivateToolWindow(boolean activateToolWindow) {
-		myActivateToolWindow = activateToolWindow;
-		return this;
-	}
+        final JComponent consolePanel = createConsolePanel(consoleView, actions);
+        RunContentDescriptor descriptor = new RunContentDescriptor(new RunProfile() {
+            @Nullable
+            @Override
+            public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
+                return null;
+            }
 
-	private ConsoleView createConsole(@NotNull Project project, @NotNull ProcessHandler processHandler) {
-		TextConsoleBuilder consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project);
-		consoleBuilder.filters(myFilterList);
-		ConsoleView console = consoleBuilder.getConsole();
-		console.attachToProcess(processHandler);
-		return console;
-	}
+            @Override
+            public String getName() {
+                return myTitle;
+            }
 
-	public void run() {
-		FileDocumentManager.getInstance().saveAllDocuments();
+            @Nullable
+            @Override
+            public Icon getIcon() {
+                return null;
+            }
+        }, new DefaultExecutionResult(), layoutUi);
 
-		ConsoleView consoleView = createConsole(myProject, myProcess);
+        final Content content = layoutUi.createContent("ConsoleContent", consolePanel, myTitle, AllIcons.Debugger.Console, consolePanel);
+        layoutUi.addContent(content, 0, PlaceInGrid.right, false);
+        layoutUi.getOptions().setLeftToolbar(createActionToolbar(consolePanel, consoleView, layoutUi, descriptor, executor), "RunnerToolbar");
 
-		if (myHelpId != null) {
-			consoleView.setHelpId(myHelpId);
-		}
-		Executor executor = TailRunExecutor.getRunExecutorInstance();
-		DefaultActionGroup actions = new DefaultActionGroup();
+        Disposer.register(this, descriptor);
+        Disposer.register(content, consoleView);
+        if (myStopAction != null) {
+            Disposer.register(consoleView, new Disposable() {
+                @Override
+                public void dispose() {
+                    myStopAction.run();
+                }
+            });
+        }
 
-		// Create runner UI layout
-		final RunnerLayoutUi.Factory factory = RunnerLayoutUi.Factory.getInstance(myProject);
-		final RunnerLayoutUi layoutUi = factory.create("Tail", "Tail", "Tail", myProject);
+        for (AnAction action : consoleView.createConsoleActions()) {
+            actions.add(action);
+        }
 
-		final JComponent consolePanel = createConsolePanel(consoleView, actions);
-		RunContentDescriptor descriptor = new RunContentDescriptor(new RunProfile() {
-			@Nullable
-			@Override
-			public RunProfileState getState(@NotNull Executor executor,
-					@NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
-				return null;
-			}
+        ExecutionManager.getInstance(myProject).getContentManager().showRunContent(executor, descriptor);
 
-			@Override
-			public String getName() {
-				return myTitle;
-			}
+        if (myActivateToolWindow) {
+            activateToolWindow();
+        }
+    }
 
-			@Nullable
-			@Override
-			public Icon getIcon() {
-				return null;
-			}
-		}, new DefaultExecutionResult(consoleView, myProcess), layoutUi);
+    @NotNull
+    private ActionGroup createActionToolbar(JComponent consolePanel, ConsoleView consoleView, @NotNull final RunnerLayoutUi myUi, RunContentDescriptor contentDescriptor, Executor runExecutorInstance) {
+        final DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.add(new RerunAction(consolePanel, consoleView));
+        actionGroup.add(new StopAction());
+        actionGroup.add(new FormatAction());
+        actionGroup.add(new CloseAction(runExecutorInstance, contentDescriptor, myProject));
+        return actionGroup;
+    }
 
-		final Content content = layoutUi.createContent("ConsoleContent", consolePanel, myTitle,
-				AllIcons.Debugger.Console, consolePanel);
-		layoutUi.addContent(content, 0, PlaceInGrid.right, false);
-		layoutUi.getOptions().setLeftToolbar(
-				createActionToolbar(consolePanel, consoleView, layoutUi, descriptor, executor),
-				"RunnerToolbar");
+    public void activateToolWindow() {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ToolWindowManager.getInstance(myProject).getToolWindow(TailRunExecutor.TOOLWINDOWS_ID).activate(null);
+            }
+        });
+    }
 
-		Disposer.register(this, descriptor);
-		Disposer.register(content, consoleView);
-		if (myStopAction != null) {
-			Disposer.register(consoleView, new Disposable() {
-				@Override
-				public void dispose() {
-					myStopAction.run();
-				}
-			});
-		}
+    private static JComponent createConsolePanel(ConsoleView view, ActionGroup actions) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(view.getComponent(), BorderLayout.CENTER);
+        panel.add(createToolbar(actions), BorderLayout.WEST);
+        return panel;
+    }
 
-		for (AnAction action : consoleView.createConsoleActions()) {
-			actions.add(action);
-		}
+    private static JComponent createToolbar(ActionGroup actions) {
+        ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, false);
+        return actionToolbar.getComponent();
+    }
 
-		ExecutionManager.getInstance(myProject).getContentManager().showRunContent(executor, descriptor);
+    @Override
+    public void dispose() {
+        Disposer.dispose(this);
+    }
 
-		if (myActivateToolWindow) {
-			activateToolWindow();
-		}
+    private class RerunAction extends AnAction implements DumbAware {
+        private final ConsoleView consoleView;
 
-		if (myAfterCompletion != null) {
-			myProcess.addProcessListener(new ProcessAdapter() {
-				@Override
-				public void processTerminated(ProcessEvent event) {
-					SwingUtilities.invokeLater(myAfterCompletion);
-				}
-			});
-		}
+        public RerunAction(JComponent consolePanel, ConsoleView consoleView) {
+            super("Rerun", "Rerun", AllIcons.Actions.Restart);
+            this.consoleView = consoleView;
+            registerCustomShortcutSet(CommonShortcuts.getRerun(), consolePanel);
+        }
 
-		myProcess.startNotify();
-	}
+        @Override
+        public void actionPerformed(AnActionEvent e) {
+            Disposer.dispose(consoleView);
+            myRerunAction.run();
+        }
 
-	@NotNull
-	private ActionGroup createActionToolbar(JComponent consolePanel, ConsoleView consoleView,
-			@NotNull final RunnerLayoutUi myUi, RunContentDescriptor contentDescriptor, Executor runExecutorInstance) {
-		final DefaultActionGroup actionGroup = new DefaultActionGroup();
-		actionGroup.add(new RerunAction(consolePanel, consoleView));
-		actionGroup.add(new StopAction());
-		actionGroup.add(new FormatAction());
-		actionGroup.add(new ClearAction());
-//		actionGroup.add(myUi.getOptions().getLayoutActions());
-		actionGroup.add(new CloseAction(runExecutorInstance, contentDescriptor, myProject));
-		return actionGroup;
-	}
-	public void activateToolWindow() {
-		ApplicationManager.getApplication().invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				ToolWindowManager.getInstance(myProject).getToolWindow(TailRunExecutor.TOOLWINDOWS_ID).activate(null);
-			}
-		});
-	}
+        @Override
+        public void update(AnActionEvent e) {
+            e.getPresentation().setVisible(myRerunAction != null);
+            e.getPresentation().setIcon(AllIcons.Actions.Restart);
+        }
+    }
 
-	private static JComponent createConsolePanel(ConsoleView view, ActionGroup actions) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.add(view.getComponent(), BorderLayout.CENTER);
-		panel.add(createToolbar(actions), BorderLayout.WEST);
-		return panel;
-	}
+    private class StopAction extends AnAction implements DumbAware {
+        public StopAction() {
+            super("Stop", "Stop", AllIcons.Actions.Suspend);
+        }
 
-	private static JComponent createToolbar(ActionGroup actions) {
-		ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions,
-				false);
-		return actionToolbar.getComponent();
-	}
+        @Override
+        public void actionPerformed(AnActionEvent e) {
+            myStopAction.run();
+        }
 
-	@Override
-	public void dispose() {
-		Disposer.dispose(this);
-	}
+        @Override
+        public void update(AnActionEvent e) {
+            e.getPresentation().setVisible(myStopAction != null);
+            e.getPresentation().setEnabled(myStopEnabled != null && myStopEnabled.compute());
+        }
+    }
 
-	private class RerunAction extends AnAction implements DumbAware {
-		private final ConsoleView consoleView;
+    private class FormatAction extends ToggleAction implements DumbAware {
+        public FormatAction() {
+            super("Format Sql", "Format Sql", FormatIcon);
+        }
 
-		public RerunAction(JComponent consolePanel, ConsoleView consoleView) {
-			super("Rerun", "Rerun", AllIcons.Actions.Restart);
-			this.consoleView = consoleView;
-			registerCustomShortcutSet(CommonShortcuts.getRerun(), consolePanel);
-		}
+        @Override
+        public boolean isSelected(AnActionEvent anActionEvent) {
+            return RestoreSqlConfig.sqlFormat;
+        }
 
-		@Override
-		public void actionPerformed(AnActionEvent e) {
-			Disposer.dispose(consoleView);
-			myRerunAction.run();
-		}
-
-		@Override
-		public void update(AnActionEvent e) {
-			e.getPresentation().setVisible(myRerunAction != null);
-			e.getPresentation().setIcon(AllIcons.Actions.Restart);
-		}
-	}
-
-	private class StopAction extends AnAction implements DumbAware {
-		public StopAction() {
-			super("Stop", "Stop", AllIcons.Actions.Suspend);
-		}
-
-		@Override
-		public void actionPerformed(AnActionEvent e) {
-			myStopAction.run();
-		}
-
-		@Override
-		public void update(AnActionEvent e) {
-			e.getPresentation().setVisible(myStopAction != null);
-			e.getPresentation().setEnabled(myStopEnabled != null && myStopEnabled.compute());
-		}
-	}
-
-	private class FormatAction extends ToggleAction implements DumbAware {
-		public FormatAction() {
-			super("Format Sql", "Format Sql", FormatIcon);
-		}
-
-		@Override
-		public boolean isSelected(AnActionEvent anActionEvent) {
-			return RestoreSqlConfig.sqlFormat;
-		}
-
-		@Override
-		public void setSelected(AnActionEvent anActionEvent, boolean state) {
-			myFormatAction.run();
-		}
-	}
-
-	private class ClearAction extends AnAction implements DumbAware {
-		public ClearAction() {
-			super("Clear Sql", "Clear Sql", AllIcons.Actions.GC);
-		}
-
-		@Override
-		public void actionPerformed(AnActionEvent e) {
-			myClearAction.run();
-		}
-
-		@Override
-		public void update(AnActionEvent e) {
-			e.getPresentation().setVisible(myClearAction != null);
-		}
-	}
+        @Override
+        public void setSelected(AnActionEvent anActionEvent, boolean state) {
+            myFormatAction.run();
+        }
+    }
 }
