@@ -5,7 +5,7 @@ This is a plugin for JetBrains IDEs that restore the ibatis/mybatis generate sql
 It will generate restore.sql file on the project base path. and replace ? to the really param value.  
 Through the "Tools -> Tail restore.sql In Console" menu you can tail the sql file.  
 You can selected the "Format Sql" button on the left to format the generate sql statements.  
-When the file length more then 50000 characters, the file contents will be cleared, and generate again.  
+~~When the file length more then 50000 characters, the file contents will be cleared, and generate again.~~
 
 ===============
 这是一个Intellij的插件，主要作用是把ibatis/mybatis生成的preparedstatement语句恢复成原始完整的sql语句。  
@@ -18,7 +18,7 @@ When the file length more then 50000 characters, the file contents will be clear
 * Clear Sql: 清空restore.sql里面的内容
 * Close: 关闭该窗口  
 
-当restore.sql内容超过50000个字符时，为了性能考虑，程序会自动清空文件内容。    
+~~当restore.sql内容超过50000个字符时，为了性能考虑，程序会自动清空文件内容。~~
 
 ===============  
 所支持ibatis/mybatis的输出格式如下：  
@@ -28,7 +28,7 @@ When the file length more then 50000 characters, the file contents will be clear
 以 "Preparing:" 和 "Parameters:" 作为分割符进行解析。  
 
 ===============  
-[插件下载](https://github.com/kookob/RestoreSql/blob/master/RestoreSql.jar?raw=true "Download Plugin")  
+[插件下载](https://github.com/kookob/RestoreSql/blob/storage2File/RestoreSql.jar?raw=true "Download Plugin")
 
 ===============  
 
