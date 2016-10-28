@@ -6,8 +6,8 @@
 
   <description><![CDATA[
       restore the ibatis/mybatis generate sql to orignal whole sql.<br>
-      It will generate restore.sql file on the project base path. and replace ? to the really param value.<br>
-      Through the "Tools -> Tail restore.sql In Console" menu you can tail the sql file.<br>
+      It will generate sql statements with replace ? to the really param value.<br>
+      Through the "Tools -> Tail restore sql log in Console" menu you can tail the sql log.<br>
     ]]></description>
 
   <change-notes><![CDATA[
