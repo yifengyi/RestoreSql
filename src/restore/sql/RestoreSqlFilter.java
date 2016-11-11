@@ -31,22 +31,26 @@ public class RestoreSqlFilter implements Filter {
             if(currentLine.contains("Parameters:") && StringHelper.isNotEmpty(prevLine) && prevLine.contains("Preparing:")) {
                 String preStr = currentLine.split("Parameters:")[0].trim();
                 String restoreSql = RestoreSqlUtil.restoreSql(prevLine, currentLine);
-                println(preStr);
+                println(preStr, ConsoleViewContentType.USER_INPUT);
                 if(sqlFormat) {
                     restoreSql = format(restoreSql);
                 }
                 println(restoreSql);
-                println("------------------------------------------------------------------------------------------------------------------------");
+                println("------------------------------------------------------------------------------------------------------------------------", ConsoleViewContentType.USER_INPUT);
             }
             prevLine = currentLine;
         }
         return null;
     }
 
-    public void println(String line) {
+    public void println(String line, ConsoleViewContentType consoleViewContentType) {
         if(TailContentExecutor.consoleView != null) {
-            TailContentExecutor.consoleView.print(line + "\n", ConsoleViewContentType.ERROR_OUTPUT);
+            TailContentExecutor.consoleView.print(line + "\n", consoleViewContentType);
         }
+    }
+
+    public void println(String line) {
+        this.println(line, ConsoleViewContentType.ERROR_OUTPUT);
     }
 
     public static String format(String sql) {
