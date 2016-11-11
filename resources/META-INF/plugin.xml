@@ -1,11 +1,11 @@
 <idea-plugin version="2">
   <id>restore.sql</id>
   <name>Restore Sql</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <vendor email="lbhuang@onlyou.com" url="http://www.onlyou.com">ob</vendor>
 
   <description><![CDATA[
-      restore the ibatis/mybatis generate sql to orignal whole sql.<br>
+      restore the ibatis/mybatis generate sql to original whole sql.<br>
       It will generate sql statements with replace ? to the really param value.<br>
       Through the "Tools -> Tail restore sql log in Console" menu you can tail the sql log.<br>
     ]]></description>
