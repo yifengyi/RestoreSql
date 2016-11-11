@@ -1,17 +1,19 @@
 <idea-plugin version="2">
   <id>restore.sql</id>
-  <name>Restore Sql</name>
-  <version>1.0.2</version>
-  <vendor email="kookob@gmail.com" url="https://github.com/kookob/RestoreSql">ob</vendor>
+  <name>Restore Sql for iBatis/MyBatis</name>
+  <version>1.0.3</version>
+  <vendor email="kookob@gmail.com" url="">ob</vendor>
 
   <description><![CDATA[
-      restore the ibatis/mybatis generate sql to original whole sql.<br>
+      Restore the ibatis/mybatis generate sql to original whole sql.<br>
       It will generate sql statements with replace ? to the really param value.<br>
-      Through the "Tools -> Tail restore sql log in Console" menu you can tail the sql log.<br>
+      Through the "Tools -> Tail restore sql in Console" menu you can tail the sql log.<br>
     ]]></description>
 
   <change-notes><![CDATA[
       <ul>
+          <li>Add default shortcut(ctrl+shift+alt+O).</li>
+          <li>Update output style.</li>
           <li>Initial release.</li>
       </ul>
     ]]>
@@ -34,9 +36,10 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="TailRestoreSqlLog" class="restore.sql.action.TailRestoreSqlLog" text="Tail restore sql log in Console"
-            description="Tail restore sql log in Console">
+    <action id="TailRestoreSqlLog" class="restore.sql.action.TailRestoreSqlLog" text="Tail restore sql in Console"
+            description="Tail restore sql in Console">
       <add-to-group group-id="ToolsMenu" anchor="last"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift O"/>
     </action>
   </actions>
 
