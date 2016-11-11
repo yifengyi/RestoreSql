@@ -26,6 +26,7 @@ You can selected the "Format Sql" button on the left to format the generate sql 
 
 `2016-10-21 16:46:29.316 DEBUG c.o.f.b.s.B.testMethod -  -  - ==>  Preparing: SELECT * FROM tablename where id = ?  `
 `2016-10-21 16:46:29.343 DEBUG c.o.f.b.s.B.testMethod -  -  - ==> Parameters: 123(Integer)`
+
 以 "Preparing:" 和 "Parameters:" 作为分割符进行解析。<br/>
 
 **插件下载**
