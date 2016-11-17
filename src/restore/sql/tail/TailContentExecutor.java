@@ -166,7 +166,7 @@ public class TailContentExecutor implements Disposable {
         actionGroup.add(new RerunAction(consolePanel, consoleView));
         actionGroup.add(new StopAction());
         actionGroup.add(new FormatAction());
-        actionGroup.add(new CloseAction(runExecutorInstance, contentDescriptor, myProject));
+        actionGroup.add(new MyCloseAction(runExecutorInstance, contentDescriptor, myProject));
         return actionGroup;
     }
 
@@ -249,6 +249,20 @@ public class TailContentExecutor implements Disposable {
         @Override
         public void setSelected(AnActionEvent anActionEvent, boolean state) {
             myFormatAction.run();
+        }
+    }
+
+    private class MyCloseAction extends CloseAction implements DumbAware {
+
+        public MyCloseAction(Executor executor, RunContentDescriptor contentDescriptor, Project project) {
+            super(executor, contentDescriptor, project);
+        }
+
+        @Override
+        public void actionPerformed(AnActionEvent e) {
+            RestoreSqlConfig.running = false;
+            RestoreSqlConfig.indexNum = 1;
+            super.actionPerformed(e);
         }
     }
 }

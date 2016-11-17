@@ -29,7 +29,7 @@ public class RestoreSqlFilter implements Filter {
     public Result applyFilter(final String currentLine, int endPoint) {
         if(RestoreSqlConfig.running) {
             if(currentLine.contains("Parameters:") && StringHelper.isNotEmpty(prevLine) && prevLine.contains("Preparing:")) {
-                String preStr = currentLine.split("Parameters:")[0].trim();
+                String preStr = RestoreSqlConfig.indexNum++ + "  " + currentLine.split("Parameters:")[0].trim();
                 String restoreSql = RestoreSqlUtil.restoreSql(prevLine, currentLine);
                 println(preStr, ConsoleViewContentType.USER_INPUT);
                 if(sqlFormat) {

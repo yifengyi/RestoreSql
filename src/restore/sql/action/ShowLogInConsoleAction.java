@@ -35,6 +35,7 @@ public class ShowLogInConsoleAction extends DumbAwareAction {
             @Override
             public void run() {
                 RestoreSqlConfig.running = false;
+                RestoreSqlConfig.indexNum = 1;
             }
         }, new Computable<Boolean>() {
             @Override

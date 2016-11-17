@@ -5,13 +5,15 @@
   <vendor email="kookob@gmail.com" url="">ob</vendor>
 
   <description><![CDATA[
-      Restore the ibatis/mybatis generate sql to original whole sql.<br>
-      It will generate sql statements with replace ? to the really param value.<br>
-      Through the "Tools -> Tail restore sql in Console" menu you can tail the sql log.<br>
+      Restore the ibatis/mybatis generate sql to original whole sql.<br/>
+      It will generate sql statements with replace ? to the really param value.<br/>
+      Through the "Tools -> Tail restore sql in Console" menu you can tail the sql log.<br/>
+      You can selected the "Format Sql" button on the left to format the generate sql statements.<br/>
     ]]></description>
 
   <change-notes><![CDATA[
       <ul>
+          <li>Add sql index num.</li>
           <li>Add default shortcut(ctrl+shift+alt+O).</li>
           <li>Update output style.</li>
           <li>Initial release.</li>
