@@ -1,22 +1,29 @@
 <idea-plugin version="2">
   <id>restore.sql</id>
   <name>Restore Sql for iBatis/MyBatis</name>
-  <version>1.0.4</version>
-  <vendor email="kookob@gmail.com" url="">ob</vendor>
+  <version>1.0.5</version>
+  <vendor email="kookob@gmail.com" url="https://plugins.jetbrains.com/plugin/9229">ob</vendor>
 
-  <description><![CDATA[
+  <description>
+    <![CDATA[
       Restore the ibatis/mybatis generate sql to original whole sql.<br/>
       It will generate sql statements with replace ? to the really param value.<br/>
       Through the "Tools -> Tail restore sql in Console" menu you can tail the sql log.<br/>
       You can selected the "Format Sql" button on the left to format the generate sql statements.<br/>
-    ]]></description>
+      <br/>
+      <a href="https://github.com/kookob/RestoreSql">Github</a><br/>
+      <br/>
+    ]]>
+  </description>
 
-  <change-notes><![CDATA[
+  <change-notes>
+    <![CDATA[
       <ul>
-          <li>Add sql index num.</li>
-          <li>Add default shortcut(ctrl+shift+alt+O).</li>
-          <li>Update output style.</li>
-          <li>Initial release.</li>
+          <li>(1.0.5) Update description.</li>
+          <li>(1.0.4) Add sql index num.</li>
+          <li>(1.0.3) Add default shortcut(ctrl+shift+alt+O).</li>
+          <li>(1.0.2) Update output style.</li>
+          <li>(1.0.1) Initial release.</li>
       </ul>
     ]]>
   </change-notes>
